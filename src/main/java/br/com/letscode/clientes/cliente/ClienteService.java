@@ -1,13 +1,27 @@
 package br.com.letscode.clientes.cliente;
 
-import br.com.letscode.clientes.repository.ClienteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.hibernate.service.spi.InjectService;
 
-@Service
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.List;
+
+@ApplicationScoped
 public class ClienteService {
 
-    @Autowired
+    @Inject
     private ClienteRepository clienteRepository;
+    @Inject
+    private ClienteMapper clienteMapper;
 
+    public ClienteService(ClienteRepository clienteRepository, ClienteMapper clienteMapper){
+        this.clienteRepository = clienteRepository;
+        this.clienteMapper = clienteMapper;
+    }
+
+    public List<ClienteDTO> findComTipos() {
+        return clienteMapper.toDomainList(
+                clienteRepository.findComTipos()
+        );
+    }
 }

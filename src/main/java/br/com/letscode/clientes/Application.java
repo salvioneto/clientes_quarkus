@@ -1,13 +1,17 @@
 package br.com.letscode.clientes;
 
+import br.com.letscode.clientes.categoria.CategoriaDTO;
+import br.com.letscode.clientes.categoria.CategoriaMapper;
 import br.com.letscode.clientes.categoria.Categoria;
 import br.com.letscode.clientes.cliente.Cliente;
+import br.com.letscode.clientes.cliente.ClienteDTO;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //Enunciado
 /*
@@ -46,54 +50,40 @@ public class Application {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	public static void main(String[] args) {
 		Quarkus.run(args);
-	}
 
-	public CommandLineRunner loadDB(Cliente cliente, Categoria categoria) throws Exception {
-		return (args) -> {
-			LOGGER.info("Carregando a base de dados");
+		LOGGER.info("Carregando a base de dados");
 
-			Categoria catDev = categoriaRepository.findByCode("dev").get(0);
-			Categoria catSales = categoriaRepository.findByCode("sales").get(0);
+		Categoria catDev = CategoriaMapper.findByCode("dev").get(0);
+		Categoria catSales = CategoriaMapper.findByCode("sales").get(0);
 
-			Cliente cliente1 = new Cliente();
-			cliente1.setUuid(UUID.randomUUID().toString());
-			cliente1.setName("Axl Rose");
-			cliente1.setAge(60);
-			cliente1.setVATnumber("AB123456789");
-			cliente1.setEmail("axl@gunsnroses.com");
-			cliente1.setCategoria(catDev);
+		Cliente cliente1 = new Cliente();
+		cliente1.setUuid(UUID.randomUUID().toString());
+		cliente1.setName("Axl Rose");
+		cliente1.setAge(60);
+		cliente1.setVATnumber("AB123456789");
+		cliente1.setEmail("axl@gunsnroses.com");
+		cliente1.setCategoria(catDev);
 
-			Cliente cliente2 = new Cliente();
-			cliente2.setUuid(UUID.randomUUID().toString());
-			cliente2.setName("Slash");
-			cliente2.setAge(55);
-			cliente2.setVATnumber("XY111222333");
-			cliente2.setEmail("slash@gunsnroses.com");
-			cliente2.setCategoria(catSales);
+		Cliente cliente2 = new Cliente();
+		cliente2.setUuid(UUID.randomUUID().toString());
+		cliente2.setName("Slash");
+		cliente2.setAge(55);
+		cliente2.setVATnumber("XY111222333");
+		cliente2.setEmail("slash@gunsnroses.com");
+		cliente2.setCategoria(catSales);
 
-			Cliente cliente3 = new Cliente();
-			cliente3.setUuid(UUID.randomUUID().toString());
-			cliente3.setName("Duff McKagan");
-			cliente3.setAge(56);
-			cliente3.setVATnumber("RR999888777");
-			cliente3.setEmail("duff@gunsnroses.com");
-			cliente3.setCategoria(catSales);
+		Cliente cliente3 = new Cliente();
+		cliente3.setUuid(UUID.randomUUID().toString());
+		cliente3.setName("Duff McKagan");
+		cliente3.setAge(56);
+		cliente3.setVATnumber("RR999888777");
+		cliente3.setEmail("duff@gunsnroses.com");
+		cliente3.setCategoria(catSales);
 
-			clienteRepository.save(cliente1);
-			clienteRepository.save(cliente2);
-			clienteRepository.save(cliente3);
+		cliente1.persist();
+		cliente2.persist();
+		cliente3.persist();
 
-			clienteRepository.findAll().forEach(
-					(c) ->
-							LOGGER.info("Cliente criado com sucesso: \n"
-									+ c.getName()
-									+ " - " + c.getEmail() + "\n"
-									+ "Categoria: "+ c.getCategoria().getCode()
-									+ "\n")
-			);
-
-			LOGGER.info("Base carregada");
-		};
-	}
-
+		LOGGER.info("Base carregada");
+	};
 }

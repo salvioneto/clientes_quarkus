@@ -1,29 +1,28 @@
 package br.com.letscode.clientes.categoria;
 
 import br.com.letscode.clientes.exceptions.NotFoundException;
-import br.com.letscode.clientes.categoria.Categoria;
-import br.com.letscode.clientes.repository.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
-@Service
 public class CategoriaService {
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    @Inject
+    private CategoriaMapper categoriaMapper;
+
+    @Inject
+    public CategoriaRepository categoriaRepository;
 
     public Categoria findCategoriaByUUIDComUsuarios(String uuid) throws NotFoundException {
-        List<Categoria> categorias = categoriaRepository.findCategoriaByUUIDComUsuarios(uuid);
+        List<Categoria> categorias = categoriaMapper.findCategoriaByUUIDComUsuarios(uuid);
         var dbCategoria = categorias.stream().peek(
                 (c) -> c.getClientes().forEach((cl) -> cl.setCategoria(null))
         ).findFirst();
-        return dbCategoria.orElseThrow(() -> new NotFoundException());
+        return dbCategoria.orElseThrow(NotFoundException::new);
     };
 
     public List<Categoria> findCategoriaComClientes() {
-        return categoriaRepository.findCategoriaComUsuarios();
+        return categoriaMapper.findCategoriaComUsuarios();
     }
 }
 

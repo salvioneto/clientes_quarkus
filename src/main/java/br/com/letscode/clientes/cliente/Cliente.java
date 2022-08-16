@@ -3,11 +3,16 @@ package br.com.letscode.clientes.cliente;
 
 import br.com.letscode.clientes.categoria.Categoria;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
+@Getter
+@Setter
 public class Cliente extends PanacheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +43,14 @@ public class Cliente extends PanacheEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     public Categoria categoria;
+
+    public Cliente() {
+
+    }
+    public Cliente(String name, String email) {
+        this.email = email;
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -71,8 +84,21 @@ public class Cliente extends PanacheEntity {
         this.email = email;
     }
 
-    public Cliente(String name, String email) {
-        this.email = email;
-        this.name = name;
+    public String getUuid() {
+        return uuid;
+    }
+
+    public Cliente setUuid(String uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public Cliente setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+        return this;
     }
 }

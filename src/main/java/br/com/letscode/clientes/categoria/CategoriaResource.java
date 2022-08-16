@@ -2,41 +2,43 @@ package br.com.letscode.clientes.categoria;
 
 import br.com.letscode.clientes.cliente.ClienteDTO;
 import br.com.letscode.clientes.exceptions.NotFoundException;
-import br.com.letscode.clientes.repository.CategoriaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/categoria")
+
+@Path("/categoria")
 public class CategoriaResource {
 
     private final Logger LOGGER = LoggerFactory.getLogger(CategoriaResource.class);
-    @Autowired
-    private CategoriaRepository categoriaRepository;
-    @Autowired
-    private CategoriaService categoriaService;
+    @Inject
+    public CategoriaMapper categoriaMapper;
 
-    @GetMapping({"/list"})
-    public ResponseEntity<Iterable<CategoriaDTO>> getCategorias() {
+    @Inject
+    public CategoriaRepository categoriaRepository;
+    @Inject
+    public CategoriaService categoriaService;
+
+    @GET
+    @Path("/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Categoria> getCategorias() {
         LOGGER.info("Lista de categorias");
-        return ResponseEntity.ok(categoriaRepository.findAll()
-                .stream().map((c) ->
-                        new CategoriaDTO(c.getUuid(), c.getName(), c.getCode(),null))
-                .collect(Collectors.toList()));
+        return Categoria.listAll();
     }
-    @GetMapping({"/list-clients"})
-    public ResponseEntity<Iterable<CategoriaDTO>> getClientesPorCategorias() {
+    @GET
+    @Path("/list-clients")
+    public List<CategoriaDTO> getClientesPorCategorias() {
         LOGGER.info("Lista de categorias");
-        return ResponseEntity.ok(
-                categoriaService.findCategoriaComClientes()
+        return categoriaService.findCategoriaComClientes()
                 .stream().map((ct) -> new CategoriaDTO(
                         ct.getUuid(),
                         ct.getName(),
@@ -44,34 +46,42 @@ public class CategoriaResource {
                         ct.getClientes().stream().map((cl) -> new ClienteDTO(
                                         cl.getUuid(), cl.getName(), cl.getEmail()))
                                 .collect(Collectors.toList())))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
-    @GetMapping("/{uuid}")
-    public ResponseEntity<CategoriaDTO> findCategoriaByUUDIComUsuarios(@PathVariable(value="uuid") String uuid) {
+    @GET
+    @Path("/{uuid}")
+    public CategoriaDTO findCategoriaByUUDIComUsuarios(@PathParam (value="uuid") String uuid) {
         try {
-            return ResponseEntity.ok(entityToDTO(categoriaService.findCategoriaByUUIDComUsuarios(uuid)));
+            return entityToDTO(categoriaService.findCategoriaByUUIDComUsuarios(uuid));
         } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return null;
         }
     }
-    @PutMapping({"/{id}"})
-    public ResponseEntity<Void> updateCategoria(@Valid @PathVariable(value="id") long id, @RequestBody Categoria categoria) {
-        categoriaRepository.save(categoria);
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public void updateCategoria(@Valid @PathParam(value="id") long id, Categoria categoria) {
+        categoria.persist();
         LOGGER.info("Dados da categoria " + id + " atualizados. :: "+ categoria);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+
     }
-    @PostMapping({ "/" })
-    public ResponseEntity<Void> createCategoria(@Valid @RequestBody Categoria categoria) {
-        categoriaRepository.save(categoria);
+    @POST
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public void createCategoria(@Valid CategoriaDTO categoriaDTO) {
+        Categoria categoria = categoriaMapper.toEntity(categoriaDTO);
+        categoria.persist();
         LOGGER.info("Nova categoria adicionada. :: "+ categoria);
-        return new ResponseEntity<Void>(HttpStatus.OK);
     }
-    @DeleteMapping({"/{id}"})
-    public ResponseEntity<Void> deleteCategoria(@PathVariable(value="id") long id) {
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public void deleteCategoria(@PathParam(value="id") long id) {
         var categoria = categoriaRepository.findById(id);
         categoriaRepository.deleteById(id);
         LOGGER.info("Categoria " + id + " removida. :: " + categoria);
-        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public CategoriaDTO entityToDTO(Optional<Categoria> categoria) {

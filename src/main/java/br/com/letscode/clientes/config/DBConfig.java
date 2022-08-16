@@ -1,19 +1,15 @@
 package br.com.letscode.clientes.config;
 
 import br.com.letscode.clientes.categoria.Categoria;
-import br.com.letscode.clientes.repository.CategoriaRepository;
-import org.apache.catalina.startup.CatalinaProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.PostMapping;
+import br.com.letscode.clientes.categoria.CategoriaMapper;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.util.UUID;
 
-@Configuration
 public class DBConfig {
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    @Inject
+    private CategoriaMapper categoriaMapper;
 
     @PostConstruct
     public void initDB(){
@@ -22,12 +18,12 @@ public class DBConfig {
         categoria1.setUuid(UUID.randomUUID().toString());
         categoria1.setName("Programador");
         categoria1.setCode("dev");
-        categoriaRepository.save(categoria1);
+        categoria1.persist(categoria1);
 
         var categoria2 = new Categoria();
         categoria2.setUuid(UUID.randomUUID().toString());
         categoria2.setName("Comerciante");
         categoria2.setCode("sales");
-        categoriaRepository.save(categoria2);
+        categoria1.persist(categoria2);
     }
 }
