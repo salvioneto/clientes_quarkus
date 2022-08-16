@@ -1,10 +1,8 @@
-package br.com.letscode.clientes.resource;
+package br.com.letscode.clientes.cliente;
 
-import br.com.letscode.clientes.model.Cliente;
-import br.com.letscode.clientes.service.ClienteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.com.letscode.clientes.cliente.Cliente;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -13,6 +11,9 @@ import java.util.List;
 
 @Path({"/client"})
 public class ClienteResource {
+
+    @Inject
+    public ClienteMapper clienteMapper;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,9 +34,9 @@ public class ClienteResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Cliente createCliente(Cliente cliente) {
+    public ClienteDTO createCliente(@Valid Cliente cliente) {
         cliente.persist();
-        return cliente;
+        return clienteMapper.toClienteDTO(cliente);
     }
 
     @DELETE

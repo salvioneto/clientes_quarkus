@@ -1,4 +1,6 @@
-package br.com.letscode.clientes.DTO;
+package br.com.letscode.clientes.categoria;
+
+import br.com.letscode.clientes.cliente.ClienteDTO;
 
 import java.util.List;
 

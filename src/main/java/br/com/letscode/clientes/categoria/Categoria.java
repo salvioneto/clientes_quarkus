@@ -1,11 +1,14 @@
-package br.com.letscode.clientes.model;
+package br.com.letscode.clientes.categoria;
+
+import br.com.letscode.clientes.cliente.Cliente;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-public class Categoria {
+public class Categoria extends PanacheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

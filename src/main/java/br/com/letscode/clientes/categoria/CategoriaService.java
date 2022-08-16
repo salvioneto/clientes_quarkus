@@ -1,7 +1,7 @@
-package br.com.letscode.clientes.service;
+package br.com.letscode.clientes.categoria;
 
 import br.com.letscode.clientes.exceptions.NotFoundException;
-import br.com.letscode.clientes.model.Categoria;
+import br.com.letscode.clientes.categoria.Categoria;
 import br.com.letscode.clientes.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

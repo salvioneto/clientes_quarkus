@@ -1,6 +1,7 @@
-package br.com.letscode.clientes.model;
+package br.com.letscode.clientes.cliente;
 
 
+import br.com.letscode.clientes.categoria.Categoria;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
@@ -11,32 +12,32 @@ public class Cliente extends PanacheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private long id;
+    public long id;
 
     @Column(nullable = false)
-    private String uuid;
+    public String uuid;
 
     @Column(nullable = false)
     @NotNull
     @NotBlank(message = "É obrigatório informar o nome.")
     @Size(min = 5, max = 100, message = "O nome deve ter entre 5 e 100 caracteres.")
-    private String name;
+    public String name;
 //    @NotBlank(message = "É obrigatório informar a idade.")
     @NotNull
     @Column(nullable = false)
     @Min(value = 18)
-    private int age;
+    public int age;
     @Column(nullable = false)
     @NotBlank(message = "É obrigatório informar o VAT.")
     @Pattern(regexp = "^[A-Z]{2}[0-9]{9}$")
-    private String VATnumber;
+    public String VATnumber;
     @Column(nullable = false)
     @NotBlank(message = "É obrigatório informar um endereço de email.")
     @Email(message = "O endereço de email informado é inválido")
-    private String email;
+    public String email;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Categoria categoria;
+    public Categoria categoria;
 
     public String getName() {
         return name;

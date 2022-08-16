@@ -1,6 +1,6 @@
 package br.com.letscode.clientes.config;
 
-import br.com.letscode.clientes.model.Categoria;
+import br.com.letscode.clientes.categoria.Categoria;
 import br.com.letscode.clientes.repository.CategoriaRepository;
 import org.apache.catalina.startup.CatalinaProperties;
 import org.springframework.beans.factory.annotation.Autowired;

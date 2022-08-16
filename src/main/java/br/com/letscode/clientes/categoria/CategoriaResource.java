@@ -1,11 +1,8 @@
-package br.com.letscode.clientes.resource;
+package br.com.letscode.clientes.categoria;
 
-import br.com.letscode.clientes.DTO.CategoriaDTO;
-import br.com.letscode.clientes.DTO.ClienteDTO;
+import br.com.letscode.clientes.cliente.ClienteDTO;
 import br.com.letscode.clientes.exceptions.NotFoundException;
-import br.com.letscode.clientes.model.Categoria;
 import br.com.letscode.clientes.repository.CategoriaRepository;
-import br.com.letscode.clientes.service.CategoriaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

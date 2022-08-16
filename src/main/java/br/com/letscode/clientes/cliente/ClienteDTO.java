@@ -1,10 +1,15 @@
-package br.com.letscode.clientes.DTO;
+package br.com.letscode.clientes.cliente;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ClienteDTO {
 
-    private String uuid;
-    private String name;
-    private String email;
+    public String uuid;
+    public String name;
+    public String email;
 
     public ClienteDTO(String uuid, String name, String email) {
         this.uuid = uuid;

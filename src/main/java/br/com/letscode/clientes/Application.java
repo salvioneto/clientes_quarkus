@@ -1,7 +1,7 @@
 package br.com.letscode.clientes;
 
-import br.com.letscode.clientes.model.Categoria;
-import br.com.letscode.clientes.model.Cliente;
+import br.com.letscode.clientes.categoria.Categoria;
+import br.com.letscode.clientes.cliente.Cliente;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import org.slf4j.Logger;
