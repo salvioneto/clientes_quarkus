@@ -1,17 +1,11 @@
 package br.com.letscode.clientes;
 
-import br.com.letscode.clientes.bean.CompanyBean;
 import br.com.letscode.clientes.model.Categoria;
 import br.com.letscode.clientes.model.Cliente;
-import br.com.letscode.clientes.repository.CategoriaRepository;
-import br.com.letscode.clientes.repository.ClienteRepository;
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.annotations.QuarkusMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 
 import java.util.UUID;
 
@@ -47,18 +41,14 @@ Deve existir pelo duas Categorias quando a API iniciar que devem ser pré carreg
 As categorias devem suportar os mesmos métodos de serviços REST que os clientes, como GET, PUT, POST e DELETE, seguindo a mesma lógica.
 */
 
-@SpringBootApplication
+@QuarkusMain
 public class Application {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	public static void main(String[] args) {
-
-		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-		CompanyBean company = context.getBean(CompanyBean.class);
-		LOGGER.warn("address :: street :: " + company.getAddress().getStreet());
+		Quarkus.run(args);
 	}
 
-	@Bean
-	public CommandLineRunner loadDB(ClienteRepository clienteRepository, CategoriaRepository categoriaRepository) throws Exception {
+	public CommandLineRunner loadDB(Cliente cliente, Categoria categoria) throws Exception {
 		return (args) -> {
 			LOGGER.info("Carregando a base de dados");
 

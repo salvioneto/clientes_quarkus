@@ -1,19 +1,13 @@
 package br.com.letscode.clientes.model;
 
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-public class Cliente {
+public class Cliente extends PanacheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
